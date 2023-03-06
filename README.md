@@ -1,2 +1,2 @@
-# JWT Project
-## A simple project to understand jwt creation and verification for authentication.
+# Auth Project
+## Repo for learning and implementing authentication techniques.
