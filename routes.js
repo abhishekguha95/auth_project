@@ -1,13 +1,42 @@
-const controller = require('./controller');
-const {authMiddleware} = require('./auth')
+import {
+    signUpController,
+    loginController,
+    protectedController,
+} from './controller/controller.js';
+import authMiddleware from './services/auth.js';
+// import cookieParser from 'cookie-parser';
 
-const express = require('express');
-const router = express.Router();
+//import and create router object
+import { Router } from 'express';
+const router = Router();
 
+// router.use(cookieParser());
 
-router.route('/1').post(controller.first);
+router.route('/').get((req, res) => {
+    res.render('home');
+});
 
-router.route('/2').post(authMiddleware, controller.second);
+router.route('/home').get((req, res) => {
+    res.render('home');
+});
 
+router.route('/sign-up').get((req, res) => {
+    res.render('sign-up');
+});
 
-module.exports = router;
+router.route('/login').get((req, res) => {
+    res.render('login');
+});
+
+router.route('/logout').get((req, res) => {
+    res.clearCookie('jwt-token');
+    res.render('login');
+});
+
+router.route('/sign-up').post(signUpController);
+
+router.route('/login').post(loginController);
+
+router.route('/protected').get(authMiddleware, protectedController);
+
+export default router;
