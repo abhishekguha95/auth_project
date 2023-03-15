@@ -98,33 +98,36 @@ const loginController = async (req, res) => {
             console.log('joi error');
             const formattedErrors = handleErrors(validUserData.error.details);
             res.status(400).json({ errors: formattedErrors });
-        }
+        } else {
+            //case1: searching email
+            const foundUser = await User.findOne({ username }).exec();
+            console.log('foundUser: ', foundUser);
 
-        //case1: searching email
-        const foundUser = await User.findOne({ username }).exec();
-        console.log('foundUser: ', foundUser);
+            if (foundUser) {
+                //verifying password
+                const match = await bcrypt.compare(
+                    password,
+                    foundUser.password
+                );
+                if (match) {
+                    //password matched
+                    const token = createJWT({ userId: foundUser._id });
 
-        if (foundUser) {
-            //verifying password
-            const match = await bcrypt.compare(password, foundUser.password);
-            if (match) {
-                //password matched
-                const token = createJWT({ userId: foundUser._id });
-
-                //jwt saved in cookie for future use
-                res.cookie('jwt-token', token, { httpOnly: true });
-                res.status(200).json({ userId: foundUser._id });
+                    //jwt saved in cookie for future use
+                    res.cookie('jwt-token', token, { httpOnly: true });
+                    res.status(200).json({ userId: foundUser._id });
+                } else {
+                    //wrong password
+                    res.status(401).json({
+                        errors: { password: 'Wrong password' },
+                    });
+                }
             } else {
-                //wrong password
+                //Username not found in db
                 res.status(401).json({
-                    errors: { password: 'Wrong password' },
+                    errors: { username: 'Username not found' },
                 });
             }
-        } else {
-            //Username not found in db
-            res.status(401).json({
-                errors: { username: 'Username not found' },
-            });
         }
     } catch (err) {
         console.log('error in loginController');
