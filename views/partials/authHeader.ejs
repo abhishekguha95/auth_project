@@ -39,12 +39,9 @@
                 <div class="col-md-3 text-end">
                     <button
                         type="button"
-                        class="btn btn-outline-primary me-2 login-btn"
+                        class="btn btn-primary me-2 logout-btn"
                     >
-                        Login
-                    </button>
-                    <button type="button" class="btn btn-primary sign-up-btn">
-                        Sign-up
+                        Logout
                     </button>
                 </div>
             </header>
@@ -56,20 +53,6 @@
             crossorigin="anonymous"
         ></script>
         <script>
-            const signUpButton = document.querySelector('.sign-up-btn');
-            console.log(signUpButton);
-            signUpButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                location.assign('/sign-up');
-            });
-
-            const loginButton = document.querySelector('.login-btn');
-            console.log(signUpButton);
-            loginButton.addEventListener('click', (e) => {
-                e.preventDefault();
-                location.assign('/login');
-            });
-
             const logOutButton = document.querySelector('.logout-btn');
             logOutButton.addEventListener('click', (e) => {
                 e.preventDefault();

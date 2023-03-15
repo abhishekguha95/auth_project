@@ -4,13 +4,10 @@ import {
     protectedController,
 } from './controller/controller.js';
 import authMiddleware from './services/auth.js';
-// import cookieParser from 'cookie-parser';
 
 //import and create router object
 import { Router } from 'express';
 const router = Router();
-
-// router.use(cookieParser());
 
 router.route('/').get((req, res) => {
     res.render('home');
@@ -30,7 +27,7 @@ router.route('/login').get((req, res) => {
 
 router.route('/logout').get((req, res) => {
     res.clearCookie('jwt-token');
-    res.render('login');
+    res.redirect('/login');
 });
 
 router.route('/sign-up').post(signUpController);

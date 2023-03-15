@@ -4,11 +4,15 @@ const userSchema = mongoose.Schema(
     {
         username: {
             type: String,
-            required: [true, 'give a username'],
+            required: [true, 'Please give a username'],
             unique: true,
             lowercase: true,
         },
-        password: { type: String, required: true, minlength: 4 },
+        password: {
+            type: String,
+            required: [true, 'Please give a username'],
+            minlength: [4, 'Please give a password greater than 3 characters'],
+        },
     },
     { timestamps: true }
 );

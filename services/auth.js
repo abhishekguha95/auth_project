@@ -6,17 +6,17 @@ const authMiddleware = async (req, res, next) => {
 
         //taking jwt from request cookie
         const jwtoken = req.cookies['jwt-token'];
+        console.log(process.env.JWT_SECRET_KEY);
 
         //jwt verification
         jwt.verify(jwtoken, process.env.JWT_SECRET_KEY, (err, decoded) => {
             if (err) {
                 console.log('error in jwt verify');
                 console.log(err);
-                res.json({
-                    msg: `${err}`,
-                });
+                res.redirect('/login');
             } else {
                 console.log('decoded: ', decoded);
+                req.decodedId = decoded.userId;
                 next();
             }
         });

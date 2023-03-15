@@ -19,16 +19,24 @@ import path from 'path';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+app.use(express.static(__dirname + '/public'));
+
 //setting view engine to ejs for rendering html
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 //connecting to db
 dotenv.config(); //for using env variables
-const dbConnectURI = process.env.MONGODB_URI;
+const dbConnectURI =
+    process.env.NODE_ENV && process.env.NODE_ENV === 'PROD'
+        ? process.env.MONGODB_URI
+        : process.env.MONGODB_URI_LOCAL;
+// const dbConnectURI = process.env.MONGODB_URI;
+console.log('dbConnectURI: ', dbConnectURI);
 async function dbConnect() {
     try {
         await mongoose.connect(dbConnectURI, {
+            dbName: 'auth-project-db',
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
@@ -42,6 +50,8 @@ dbConnect();
 //using router middleware
 app.use(router);
 
-app.listen(4000, () => {
+const PORT = process.env.PORT || 4000;
+
+app.listen(PORT, () => {
     console.log('server listening to port 4000');
 });
