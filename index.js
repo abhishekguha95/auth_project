@@ -50,8 +50,8 @@ dbConnect();
 //using router middleware
 app.use(router);
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () => {
-    console.log('server listening to port 4000');
+    console.log(`server listening to port ${PORT}`);
 });
