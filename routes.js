@@ -10,10 +10,12 @@ import { Router } from 'express';
 const router = Router();
 
 router.route('/').get((req, res) => {
+    console.log('home route hit');
     res.render('home');
 });
 
 router.route('/home').get((req, res) => {
+    console.log('home route hit');
     res.render('home');
 });
 
